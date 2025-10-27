@@ -12,6 +12,7 @@ import {
   PanResponder,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import gigachadImage from "../../assets/gigachad.jpg";
 
 const METRICS = [
   { label: "Overall", value: 86, icon: "⭐" },
@@ -136,23 +137,19 @@ export default function PhysiqueAnalysisScreen({ onNext }) {
               </View>
             )}
 
-            <Text style={styles.title}>Physique Analysis</Text>
-            <Text style={styles.subtitle}>
-              Upload a photo to begin your analysis
-            </Text>
-
-            {!showResults ? (
-              <>
+                                      {!showResults ? (
+               <>
+                 <Text style={styles.title}>Physique Analysis</Text>
+                 <Text style={styles.subtitle}>
+                   Upload a photo to begin your analysis
+                 </Text>
                 {/* Image Widget */}
                 <View style={styles.imageContainer}>
                   {image ? (
                     <Image source={{ uri: image }} style={styles.uploadedImage} />
                   ) : (
                     <View style={styles.placeholderContainer}>
-                      <Text style={styles.placeholderIcon}>📸</Text>
-                      <Text style={styles.placeholderText}>
-                        Good physique example
-                      </Text>
+                      <Image source={gigachadImage} style={styles.placeholderImage} />
                       <Text style={styles.placeholderSubtext}>
                         Upload your photo to begin
                       </Text>
@@ -197,6 +194,20 @@ export default function PhysiqueAnalysisScreen({ onNext }) {
               </>
             ) : (
               <>
+                {/* Back Button and Title */}
+                <View style={styles.headerRow}>
+                  <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => {
+                      setImage(null);
+                      setShowResults(false);
+                    }}
+                  >
+                    <Text style={styles.backButtonText}>←</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.titleWithBack}>Physique Analysis</Text>
+                </View>
+                
                 {/* Results View */}
                 {image && (
                   <View style={styles.resultsImageContainer}>
@@ -306,6 +317,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 8,
   },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  titleWithBack: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    flex: 1,
+    textAlign: "center",
+    marginLeft: -40, // To center the title accounting for button
+  },
   subtitle: {
     fontSize: 16,
     color: "#CCCCCC",
@@ -329,23 +353,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 40,
+    padding: 20,
+    position: "relative",
   },
-  placeholderIcon: {
-    fontSize: 64,
-    marginBottom: 16,
-  },
-  placeholderText: {
-    fontSize: 20,
-    color: "#FFFFFF",
-    fontWeight: "600",
-    marginBottom: 8,
-    textAlign: "center",
+  placeholderImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   placeholderSubtext: {
     fontSize: 14,
-    color: "#CCCCCC",
+    color: "#FFFFFF",
     textAlign: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    right: 20,
   },
   imageButtonContainer: {
     flexDirection: "row",
@@ -503,6 +530,18 @@ const styles = StyleSheet.create({
   retakeButtonText: {
     color: "#FFFFFF",
     fontSize: 16,
+    fontWeight: "600",
+  },
+  backButton: {
+    width: 50,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  },
+  backButtonText: {
+    color: "#FF6B35",
+    fontSize: 32,
     fontWeight: "600",
   },
 });

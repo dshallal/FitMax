@@ -71,7 +71,9 @@ export default function OnboardingFlow() {
 
   return (
     <View style={styles.container}>
-      <PageIndicator currentPage={currentPage} totalPages={totalPages} />
+      {currentPage < 3 && (
+        <PageIndicator currentPage={currentPage} totalPages={totalPages} />
+      )}
       {renderCurrentScreen()}
     </View>
   );
