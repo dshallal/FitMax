@@ -62,24 +62,22 @@ export default function GenderScreen({ onNext, onSkip, initialData }) {
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.label}>Height (cm)</Text>
+          <Text style={styles.label}>Height (in)</Text>
           <TextInput
             style={styles.input}
             value={height}
             onChangeText={setHeight}
             placeholder="Enter your height"
             placeholderTextColor="#666"
-            keyboardType="numeric"
           />
 
-          <Text style={styles.label}>Weight (kg)</Text>
+          <Text style={styles.label}>Weight (lbs)</Text>
           <TextInput
             style={styles.input}
             value={weight}
             onChangeText={setWeight}
             placeholder="Enter your weight"
             placeholderTextColor="#666"
-            keyboardType="numeric"
           />
         </View>
 

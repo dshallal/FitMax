@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  Alert,
+  PanResponder,
 } from "react-native";
 
 export default function AuthScreen({ onNext, onSkip, initialData }) {
@@ -13,23 +15,62 @@ export default function AuthScreen({ onNext, onSkip, initialData }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
 
   const handleNext = () => {
-    // In a real app, you would handle authentication here
-    onNext({ email, password, name });
+    if (!isFormValid) return;
+    
+    Alert.alert(
+      "Warning",
+      "This feature is for demonstration purposes only. Your data will not be saved.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Continue",
+          onPress: () => onNext({ email, password, name }),
+        },
+      ]
+    );
   };
 
   const isFormValid = email && password && (!isLogin || name);
 
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderRelease: (evt, gestureState) => {
+      if (gestureState.dx < -50) {
+        // Swipe left
+        if (isFormValid) {
+          handleNext();
+        } else {
+          setShowWarning(true);
+          setTimeout(() => setShowWarning(false), 2000);
+        }
+      }
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>
-          {isLogin ? "Welcome Back" : "Create Account"}
-        </Text>
-        <Text style={styles.subtitle}>
-          {isLogin ? "Sign in to continue" : "Sign up to get started"}
-        </Text>
+      <View style={styles.content} {...panResponder.panHandlers}>
+          {showWarning && (
+            <View style={styles.warningContainer}>
+              <Text style={styles.warningText}>
+                Please fill in all required fields
+              </Text>
+            </View>
+          )}
+          
+          <Text style={styles.title}>
+            {isLogin ? "Welcome Back" : "Create Account"}
+          </Text>
+          <Text style={styles.subtitle}>
+            {isLogin ? "Sign in to continue" : "Sign up to get started"}
+          </Text>
 
         <View style={styles.form}>
           {!isLogin && (
@@ -211,5 +252,17 @@ const styles = StyleSheet.create({
     color: "#FF6B35",
     fontSize: 14,
     fontWeight: "500",
+  },
+  warningContainer: {
+    backgroundColor: "#FF6B35",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  warningText: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    textAlign: "center",
   },
 });

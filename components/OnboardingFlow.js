@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import GenderScreen from "./screens/GenderScreen";
 import ActivityScreen from "./screens/ActivityScreen";
 import AuthScreen from "./screens/AuthScreen";
+import PhysiqueAnalysisScreen from "./screens/PhysiqueAnalysisScreen";
 import PageIndicator from "./PageIndicator";
 
 const { width } = Dimensions.get("window");
@@ -16,7 +17,7 @@ export default function OnboardingFlow() {
     activityLevel: "",
   });
 
-  const totalPages = 3;
+  const totalPages = 4;
 
   const handleNext = (data) => {
     setUserData((prev) => ({ ...prev, ...data }));
@@ -55,6 +56,12 @@ export default function OnboardingFlow() {
             onNext={handleNext}
             onSkip={handleSkip}
             initialData={userData}
+          />
+        );
+      case 3:
+        return (
+          <PhysiqueAnalysisScreen
+            onNext={handleNext}
           />
         );
       default:
